@@ -113,3 +113,15 @@ type Person = typeof MyArray[number];
  * 三元表达式
  */
 //  SomeType extends OtherType ? TrueType : FalseType;
+
+interface Animal {
+    kind: string
+}
+// interface与class区别是interface无需函数的具体实现
+interface Dog extends Animal {
+    bark(): void
+}
+
+interface dispatch<T extends { name: string }> {
+    (action: T): T
+}
