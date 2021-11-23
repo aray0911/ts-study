@@ -18,15 +18,17 @@
 
 
 /* _____________ Your Code Here _____________ */
-
-type Includes<T extends readonly any[], U> = {
-    [key in T[number]]: true
-}[U] extends true ? true : false
+// y元组循环中false不能作为key值，直接会被跳过，所以在循环中需要转换为字符串[key in T[number]as `${key}`]: true
+// type Includes<T extends readonly any[], U> = {
+//     [key in T[number]as `${key}`]: true
+// }[U] extends true ? true : false
+// Equal方法返回的是type不是值，所以判断布尔量需要转换为： Equal<F, U> extends true
+type Includes<T extends readonly any[], U> = T["length"] extends 0 ? false : (T extends [infer F, ...infer REST] ? (Equal<F, U> extends true ? true : Includes<REST, U>) : never)
 
 /* _____________ Test Cases _____________ */
 import { Equal, Expect } from '@type-challenges/utils'
 
-type res = Includes<[false, 7], false>
+type res = [true] extends [boolean] ? true : false
 
 type cases = [
     Expect<Equal<Includes<['Kars', 'Esidisi', 'Wamuu', 'Santana'], 'Kars'>, true>>,
